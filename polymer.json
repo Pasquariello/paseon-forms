@@ -1,0 +1,17 @@
+{
+    "entrypoint": "index.html",
+    "shell": "src/index.js",
+    "sources": [
+      "src/**.js",
+      "manifest/**",
+      "package.json"
+    ],
+    "extraDependencies": [
+      "node_modules/@webcomponents/webcomponentsjs/bundles/**"
+    ],
+    "builds": [
+        { "preset": "es5-bundled" },
+        { "preset": "es6-unbundled" },
+        { "preset": "uncompiled-unbundled" }
+      ]
+  }
