@@ -14,7 +14,8 @@ class PaseonForm extends LitElement {
             msgSuccess      : { type: Boolean },
             recipient_email : { type: String },
             loading         : { type: Boolean },
-            formSchema      : { type: Object }
+            formSchema      : { type: Object },
+            name            : { reflectToAttribute: true, type: String, noAccessor: true },
         };
     }
 
@@ -28,9 +29,10 @@ class PaseonForm extends LitElement {
             from: '',
             subject: '',
             body: '',
-            formSchema: {name: 'test'},
-
         };
+        this.name = '';
+        // this.formSchema= null
+        this.formSchema = null;
 
         this.msgSuccess = false;
         
@@ -39,7 +41,9 @@ class PaseonForm extends LitElement {
 
     firstUpdated() {
        // this.shadowRoot.appendChild(this.fontScriptTag());
-        this.initFetch(); //initial fetch if I need one
+       this.initFetch(); //initial fetch if I need one
+     
+
     }
 
 
@@ -258,14 +262,29 @@ class PaseonForm extends LitElement {
         `;
     }
 
-    renderElem(tag){
+    //Build each form field
+    renderFormField(field){
        let obj = {
-            input: html`<input/>`,
-            select: html`<select><select/>`,
-            textarea: html`<textarea/>`
+            input: html`
+                    <input 
+                        type="${field.type}"
+                        name="${field.name}"
+                    />
+                `,
+            select: html`
+                    <select>
+                        
+                    <select/>
+                `,
+            textarea: html`
+                    <textarea
+                        type="${field.type}"
+                        name="${field.name}"
+                    />
+                `
         }
 
-        return obj[tag]
+        return obj[field.tag]
 
     }
 
@@ -274,6 +293,36 @@ class PaseonForm extends LitElement {
 
         console.log(this.formSchema.data_schema[0].form_schema)
         return html`
+            <style>
+                input, select, textarea {
+                    width: 100%;
+                    padding: 12px 20px;
+                    margin: 8px 0;
+                    display: inline-block;
+                    border: 1px solid #ccc;
+                    border-radius: 4px;
+                    box-sizing: border-box;
+                }
+                
+                input[type=submit] {
+                    width: 100%;
+                    color: white;
+                    background: rgb(2,0,36);
+                    background: linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(108,9,121,1) 39%, rgba(255,0,63,1) 100%);
+                    padding: 14px 20px;
+                    margin: 8px 0;
+                    border: none;
+                    border-radius: 4px;
+                    cursor: pointer;
+                }
+                
+                input[type=submit]:hover {
+                    background-color: #45a049;
+                    
+                }
+
+            </style>
+        
             <div>
                 <form
                     @submit=${(e) => {
@@ -284,10 +333,10 @@ class PaseonForm extends LitElement {
                 ${
                     this.formSchema.data_schema[0].form_schema.map( field => {
                         return html`
-                            
+                            <label>${field.label}</label>
                             ${
-
-                                this.renderElem(field.tag)
+                               
+                                this.renderFormField(field)
                             
                             }
                         `
@@ -307,6 +356,7 @@ class PaseonForm extends LitElement {
     // The _render callback is called each time any of the defined properties change.
     // lit-html is optimized for handling frequent updates and updating the DOM efficiently
     render() {
+        console.log('TAYLOR', this.name)
         return html`
 
             <style>
