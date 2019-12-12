@@ -14,6 +14,7 @@ class PaseonForm extends LitElement {
             msgSuccess      : { type: Boolean },
             recipient_email : { type: String },
             loading         : { type: Boolean },
+            formSchema      : { type: Object }
         };
     }
 
@@ -27,6 +28,8 @@ class PaseonForm extends LitElement {
             from: '',
             subject: '',
             body: '',
+            formSchema: {name: 'test'},
+
         };
 
         this.msgSuccess = false;
@@ -42,6 +45,22 @@ class PaseonForm extends LitElement {
 
     initFetch() {
         console.log('Hello from Init')
+
+        let id = 167
+
+        let url = `http://localhost:3001/campaign/get_campaign_details/${id}`
+
+        fetch(url)
+                .then(response => {
+                    if (response.status === 200) {
+                        return response.json();
+                    }
+                    return response.json();
+                })
+                .then(response => {
+                    this.formSchema = response 
+                });
+        
     }
 
 
@@ -239,6 +258,51 @@ class PaseonForm extends LitElement {
         `;
     }
 
+    renderElem(tag){
+       let obj = {
+            input: html`<input/>`,
+            select: html`<select><select/>`,
+            textarea: html`<textarea/>`
+        }
+
+        return obj[tag]
+
+    }
+
+    renderCustomForm() {
+
+
+        console.log(this.formSchema.data_schema[0].form_schema)
+        return html`
+            <div>
+                <form
+                    @submit=${(e) => {
+                        e.preventDefault() 
+                        console.log('HELLO')
+                    }}
+                >
+                ${
+                    this.formSchema.data_schema[0].form_schema.map( field => {
+                        return html`
+                            
+                            ${
+
+                                this.renderElem(field.tag)
+                            
+                            }
+                        `
+
+                    })
+
+                }
+                <input type="submit" />
+                </form>
+            </div>
+
+        `
+
+    }
+
 
     // The _render callback is called each time any of the defined properties change.
     // lit-html is optimized for handling frequent updates and updating the DOM efficiently
@@ -257,9 +321,15 @@ class PaseonForm extends LitElement {
                 transform: translate(-50%, -50%);
                 z-index: 99;
             }
+
    
             </style>
             <div style="position: relative">
+                ${
+                    this.formSchema ? 
+                        this.renderCustomForm()
+                        : null
+                }
                 ${this.renderBasicContactForm()}
                 <div class="centerContent">
                 ${(this.msgSuccess ? this.renderSuccess() : null)}
