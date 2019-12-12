@@ -146,8 +146,9 @@ class PaseonForm extends LitElement {
             input[type=submit] {
                 width: 100%;
                 color: white;
-                background: rgb(2,0,36);
-                background: linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(108,9,121,1) 39%, rgba(255,0,63,1) 100%);
+                background: black;
+                // background: rgb(2,0,36);
+                // background: linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(108,9,121,1) 39%, rgba(255,0,63,1) 100%);
                 padding: 14px 20px;
                 margin: 8px 0;
                 border: none;
@@ -156,8 +157,17 @@ class PaseonForm extends LitElement {
             }
             
             input[type=submit]:hover {
-                background-color: #45a049;
+                color: black !important;
+                background: white;
+                border: 3px solid black;
+                // border-color: black !important;
+                transition: all 0.4s ease 0s;
                 
+            }
+
+            input[type=submit]:active {
+                position: relative;
+                top: 1px;
             }
 
             </style>
@@ -307,18 +317,30 @@ class PaseonForm extends LitElement {
                 input[type=submit] {
                     width: 100%;
                     color: white;
-                    background: rgb(2,0,36);
-                    background: linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(108,9,121,1) 39%, rgba(255,0,63,1) 100%);
+                    background: black;
+                    // background: rgb(2,0,36);
+                    // background: linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(108,9,121,1) 39%, rgba(255,0,63,1) 100%);
                     padding: 14px 20px;
                     margin: 8px 0;
                     border: none;
                     border-radius: 4px;
                     cursor: pointer;
+                    border: 4px solid black !important;
+
                 }
                 
                 input[type=submit]:hover {
-                    background-color: #45a049;
+                    color: black !important;
+                    background: white;
+                    // border: 3px solid black;
+                    // border-color: black !important;
+                    transition: all 0.4s ease 0s;
                     
+                }
+    
+                input[type=submit]:active {
+                    position: relative;
+                    top: 1px;
                 }
 
             </style>
