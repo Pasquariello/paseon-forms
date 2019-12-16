@@ -48,7 +48,6 @@ class PaseonForm extends LitElement {
 
 
     initFetch() {
-        console.log('Hello from Init')
 
         let id = 167
 
@@ -78,12 +77,10 @@ class PaseonForm extends LitElement {
     submitForm(e) {
         e.preventDefault();
         this.loading = true;
-        console.log('Posting...');
 
         let data = this.form_obj;
         data.recipient_email = this.recipient_email;
         
-        console.log('This it my data!', data)
 
          //fetch('http://localhost:3001/sendEmail/test', {
             //http://localhost:7071/api/PaseonMailTrigger
@@ -101,7 +98,6 @@ class PaseonForm extends LitElement {
                 this.msgSuccess = true;
                 let self = this;
                 setTimeout(function(){ 
-                    console.log('YOYOYO ')
                     self.msgSuccess = false; 
                 }, 2000);            } 
             else {
