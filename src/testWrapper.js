@@ -87,7 +87,6 @@ class TestWrapper extends LitElement {
         console.log(e)
         let rawForm = e.target
         let value = this.serializeArray(rawForm)
-        console.log('my values', value)
        
     }
     // The _render callback is called each time any of the defined properties change.

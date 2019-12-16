@@ -113,7 +113,6 @@ class PaseonForm extends LitElement {
       
     renderSuccess() {
         
-        console.log('render Success')
         return html`
 
         <div class="successMsg">
@@ -345,7 +344,6 @@ class PaseonForm extends LitElement {
                 <form
                     @submit=${(e) => {
                         e.preventDefault() 
-                        console.log('HELLO')
                     }}
                 >
                 ${
@@ -374,7 +372,6 @@ class PaseonForm extends LitElement {
     // The _render callback is called each time any of the defined properties change.
     // lit-html is optimized for handling frequent updates and updating the DOM efficiently
     render() {
-        console.log('TAYLOR', this.name)
         return html`
 
             <style>
