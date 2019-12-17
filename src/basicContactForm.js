@@ -35,7 +35,6 @@ class BaiscForm extends LitElement {
 
 
     handleSetInputValues (e) {
-        //this.addressForm[e.target.name] = e.target.value;
 
         return this.form_obj[e.target.name] = e.target.value;
     }
