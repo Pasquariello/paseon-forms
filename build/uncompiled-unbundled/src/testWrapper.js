@@ -1,7 +1,0 @@
-import{LitElement,html}from"../node_modules/lit-element/lit-element.js";import{styleMap}from"../node_modules/lit-html/directives/style-map.js";import{classMap}from"../node_modules/lit-html/directives/class-map.js";class TestWrapper extends LitElement{static get properties(){return{recipient_email:{type:String},msgSuccess:{type:Boolean},loading:{type:Boolean}}}constructor(){super();this.loading=!1;this.msgSuccess=!1}firstUpdated(){document.querySelector("my-element")}handleSetInputValues(e){return this.form_obj[e.target.name]=e.target.value}serializeArray(form){for(var serialized=[],i=0,field;i<form.elements.length;i++){field=form.elements[i];if(field.disabled||"file"===field.type||"reset"===field.type||"submit"===field.type||"button"===field.type)continue;if("select-multiple"===field.type){for(var n=0;n<field.options.length;n++){if(!field.options[n].selected)continue;serialized.push({name:field.name,value:field.options[n].value})}}else if("checkbox"!==field.type&&"radio"!==field.type||field.checked){serialized.push({name:field.name,value:field.value})}}return serialized}submitForm(e){e.preventDefault();console.log(e);let rawForm=e.target,value=this.serializeArray(rawForm);console.log("my values",value)}render(){return html`
-            <div id="mybutton" @click="${e=>console.log("taylor",e.target)}" @submit=${(e,data)=>this.submitForm(e,data)}>
-                
-                <slot></slot>
-            </div>
-          
-        `}}customElements.define("test-wrapper",TestWrapper);

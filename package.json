@@ -7,7 +7,8 @@
     "start": "polymer serve",
     "build": "polymer build",
     "lint": "polymer lint",
-    "test": "polymer test"
+    "test": "polymer test",
+    "test:integration": "polymer build # test that psk builds without error with the CLI"
   },
   "author": "Taylor Pasquariello",
   "license": "ISC",
@@ -16,5 +17,9 @@
     "form-serialize": "^0.7.2",
     "lit-element": "^2.2.1",
     "lit-html": "^1.1.2"
+  },
+  "devDependencies": {
+    "polymer-cli": "^1.7.1",
+    "wct-browser-legacy": "^1.0.0"
   }
 }
