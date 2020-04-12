@@ -12,7 +12,7 @@ class PaseonForm extends LitElement {
             recipient_email : { type: String }, //Should be array?
             form_obj        : { type: Object },
             msgSuccess      : { type: Boolean },
-            recipient_email : { type: String },
+            id              : { type: Number },
             loading         : { type: Boolean },
             formSchema      : { type: Object },
             name            : { reflectToAttribute: true, type: String, noAccessor: true },
@@ -25,10 +25,10 @@ class PaseonForm extends LitElement {
 
         this.loading = false;
         this.form_obj = {
-            name: '',
-            from: '',
-            subject: '',
-            body: '',
+            // name: '',
+            // from: '',
+            // subject: '',
+            // body: '',
         };
         this.name = '';
         // this.formSchema= null
@@ -49,9 +49,8 @@ class PaseonForm extends LitElement {
 
     initFetch() {
 
-        let id = 167
 
-        let url = `http://localhost:3001/campaign/get_campaign_details/${id}`
+        let url = `http://localhost:3001/campaign/get_campaign_details/${this.id}`
 
         fetch(url)
                 .then(response => {
@@ -72,25 +71,37 @@ class PaseonForm extends LitElement {
 
         return this.form_obj[e.target.name] = e.target.value;
     }
+
+    handleSetCustomInputValues (e) {
+        //this.addressForm[e.target.name] = e.target.value;
+
+        return this.form_obj[e.target.name] = e.target.value;
+    }
+
     
 
     submitForm(e) {
+        console.log()
         e.preventDefault();
         this.loading = true;
 
         let data = this.form_obj;
-        data.recipient_email = this.recipient_email;
+        //let data = this.form_obj;
+       // data.recipient_email = this.recipient_email;
         
-
+        console.log('this.form_obj', this.form_obj)
          //fetch('http://localhost:3001/sendEmail/test', {
             //http://localhost:7071/api/PaseonMailTrigger
             //https://paseonemailservice.azurewebsites.net/api/paseon
-        fetch('https://paseonemailservice.azurewebsites.net/api/paseon', {
+        fetch(`http://localhost:3001/campaign_response/${this.id}`, {
+
+        // fetch('https://paseonemailservice.azurewebsites.net/api/paseon', {
         headers: {
             'Content-Type':'application/json',
             },
           method: 'POST',
-          body: JSON.stringify(data),
+          body: JSON.stringify({field_values: data}),
+          //body: JSON.stringify({field_values: this.form_obj})
         })
         .then(response => {
             if (response.status === 200) {
@@ -274,6 +285,8 @@ class PaseonForm extends LitElement {
                     <input 
                         type="${field.type}"
                         name="${field.name}"
+                        .value="${this.form_obj[field.name ]}"
+                        @input="${(e) => this.handleSetCustomInputValues(e)}"
                     />
                 `,
             select: html`
@@ -288,8 +301,9 @@ class PaseonForm extends LitElement {
                     />
                 `
         }
-
-        return obj[field.tag]
+        console.log('FIELDhhh', field.tag)
+        console.log('OBJJJ', obj[field.tag] )
+        return obj[`${field.tag}`]
 
     }
 
@@ -343,19 +357,25 @@ class PaseonForm extends LitElement {
             <div>
                 <form
                     @submit=${(e) => {
-                        e.preventDefault() 
+                        e.preventDefault();
+                        this.submitForm(e)
+                        
                     }}
                 >
                 ${
-                    this.formSchema.data_schema[0].form_schema.map( field => {
-                        return html`
-                            <label>${field.label}</label>
-                            ${
-                               
-                                this.renderFormField(field)
-                            
-                            }
-                        `
+                    this.formSchema.data_schema[0].form_schema.map( row => {
+                        return row.map(field => { 
+                            console.log('FIELD', field)
+                            return html`
+                                <label>${field.label}</label>
+                                
+                                ${
+                                
+                                    this.renderFormField(field)
+                                    
+                                }
+                            `
+                        })
 
                     })
 
@@ -395,7 +415,7 @@ class PaseonForm extends LitElement {
                         this.renderCustomForm()
                         : null
                 }
-                ${this.renderBasicContactForm()}
+               
                 <div class="centerContent">
                 ${(this.msgSuccess ? this.renderSuccess() : null)}
                 ${(this.loading ? this.renderLoading() : null)}
